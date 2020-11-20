@@ -81,7 +81,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text text-info bg-white">Description</span>
                     </div>
-                    <textarea name="description" class="form-control" aria-label="With textarea" placeholder="What's the story here?" value="<?= $row['description']?>"></textarea>
+                    <textarea name="description" class="form-control" aria-label="With textarea"><?= $row['description']?></textarea>
                 </div>
 
                 <div class="form-group">
