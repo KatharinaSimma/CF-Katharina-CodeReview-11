@@ -3,10 +3,15 @@
     session_start();
     require_once 'actions/db_connect.php';
     
+    //if session is not set this will redirect to login page
+    if(!isset($_SESSION['user'])){
+        header("Location: login.php");
+        exit;
+    }
     
     // select logged-in users details
-    //$res=mysqli_query($conn, "SELECT * FROM users WHERE user_id =".$_SESSION['user']);
-    //$userRow=mysqli_fetch_array($res, MYSQLI_ASSOC);
+    $res=mysqli_query($conn, "SELECT * FROM users WHERE user_id =".$_SESSION['user']);
+    $userRow=mysqli_fetch_array($res, MYSQLI_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -33,7 +38,9 @@
         <main>
             <div class="container w-90 mb-4">
 
-
+                <p class="text-info mt-1"> Hi <?php echo $userRow['email' ]; ?>
+                    <a href= "logout.php?logout"><button type="button" class='btn btn-info'>Log out</button></a>
+                </p>
 
                 <h1 class="text-info mt-4">Welcome to Adopt an Animal</h1>
                 <p class="text-muted">Your favorite site to adopt weird animals</p>
@@ -42,9 +49,6 @@
                     <h2 class="text-info my-5">What would you like to do?</h2>
                     <a href="login.php"><button type="button" class='btn btn-info'>Log in</button></a>
                     <a href="register.php"><button type="button" class='btn btn-info'>Register an account</button></a>
-                    <span class="text-info mt-1"> <?php echo $userRow['email' ]; ?>
-                        <a href= "logout.php?logout"><button type="button" class='btn btn-info'>Log out</button></a>
-                    </span>
                 </div>
 
                <br>
@@ -57,10 +61,6 @@
                     <a href="?filter=large"><button type="button" class='btn btn-info'>show large only</button></a>
                     <a href="?filter=senior"><button type="button" class='btn btn-info'>show senior only</button></a>
                 </div>
-
-                
-
-
 
                 <div class="row mt-4">
                     <?php
@@ -96,6 +96,7 @@
                                                 <p>Age: <?= $row['age'] ?></p>
                                                 <p><?= $row['description'] ?></p>
                                             </p>
+                                            <a href="#"><button type="button" class='btn btn-info'>Adopt</button></a>
                                         </div>
                                     </div>
                                 <?php

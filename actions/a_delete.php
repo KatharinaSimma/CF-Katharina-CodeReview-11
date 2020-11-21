@@ -33,7 +33,7 @@
         $sql = "DELETE FROM animal WHERE animal_id = {$id}";
             if($conn->query($sql) === TRUE) {
             echo "<h2 class='text-info mt-4'>Successfully deleted!</h2>" ;
-            echo "<a href='../index.php'><button type='button' class='btn btn-info my-4'>Back</button></a>";
+            echo "<a href='../admin.php'><button type='button' class='btn btn-info my-4'>Back</button></a>";
         } else {
             echo "Error updating record : " . $conn->error;
         }

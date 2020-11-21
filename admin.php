@@ -1,4 +1,17 @@
-<?php require_once 'actions/db_connect.php'; ?>
+<?php 
+    ob_start();
+    session_start();
+    require_once 'actions/db_connect.php'; 
+
+    // if session is not set this will redirect to login page
+    if(!isset($_SESSION['admin'])){
+        header("Location: login.php");
+        exit;
+    }
+
+    $res=mysqli_query($conn, "SELECT * FROM users WHERE user_id =".$_SESSION['admin']);
+    $userRow=mysqli_fetch_array($res, MYSQLI_ASSOC);
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -25,16 +38,36 @@
 
             <h1 class="text-info mt-4">Add, Edit or Delete Animals</h1>
 
+                <!-- filter buttons -->
+                <div>
+                    <a href="?"><button type="button" class='btn btn-info'>show all animals</button></a>
+                    <a href="?filter=small"><button type="button" class='btn btn-info'>show small only</button></a>
+                    <a href="?filter=large"><button type="button" class='btn btn-info'>show large only</button></a>
+                    <a href="?filter=senior"><button type="button" class='btn btn-info'>show senior only</button></a>
+                </div>
+
 
             <div >
-                <h2 class="text-info my-5">Add an animal</h2>
+                <h2 class="text-info mt-5">Add an animal</h2>
                 <a href= "create.php"><button type="button" class='btn btn-info'>Add Animal</button></a>
+                <span class="text-info mt-1"> <?php echo $userRow['email' ]; ?>
+                        <a href= "logout.php?logout"><button type="button" class='btn btn-info'>Log out</button></a>
+                    </span>
             </div>
 
 
             <div class="row mt-4">
                 <?php
                     $sql = "SELECT * FROM animal";
+                    // modify query if filter is set, each if statement appends the query.
+                    if (isset($_GET["filter"])) {
+                        //echo $_GET["filter"];
+                        $filter = $_GET["filter"];
+                        if ( $filter === 'small') $sql .= " WHERE size = 'small'";
+                        elseif ( $filter === 'large') $sql .= " WHERE size = 'large'";
+                        elseif ( $filter === 'senior') $sql .= " WHERE age > 8";
+                    }     
+
                     $result = $conn->query($sql);
 
                     if($result->num_rows > 0) {

@@ -1,4 +1,17 @@
-<?php require_once 'actions/db_connect.php'; ?>
+<?php
+    ob_start();
+    session_start();
+    require_once 'actions/db_connect.php'; 
+
+    // if session is not set this will redirect to login page
+    if(!isset($_SESSION['admin'])){
+        header("Location: login.php");
+        exit;
+    }
+    $res=mysqli_query($conn, "SELECT * FROM users WHERE user_id =".$_SESSION['admin']);
+    $userRow=mysqli_fetch_array($res, MYSQLI_ASSOC);
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -22,6 +35,10 @@
 
     <main>
         <div class="container w-90 mb-4">
+
+        <span class="text-info mt-1"> <?php echo $userRow['email' ]; ?>
+                        <a href= "logout.php?logout"><button type="button" class='btn btn-info'>Log out</button></a>
+                    </span>
 
             <h1 class="text-info mt-4">Add an Animal</h1>
 
