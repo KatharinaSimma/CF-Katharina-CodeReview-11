@@ -15,3 +15,4 @@
 * Some action pages have bootstrap not included
 * The Task did not state to create a functionality to actually adopt a pet. I included it in my setup but I haven't implemented it yet.
 * Bonus points
+* add more input validation, for security and user convenience
